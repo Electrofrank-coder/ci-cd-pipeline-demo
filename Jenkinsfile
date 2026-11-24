@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.11-slim'
-        }
-    }
+    agent any
 
     stages {
         stage('Clonacion del repositorio') {
@@ -15,15 +11,15 @@ pipeline {
 
         stage('Instalacion de dependencias') {
             steps {
-                sh 'pip install --upgrade pip'
-                sh 'pip install -r requirements.txt'
+                sh 'python3 -m pip install --upgrade pip'
+                sh 'python3 -m pip install -r requirements.txt'
                 echo 'Dependencias instaladas correctamente'
             }
         }
 
         stage('Ejecucion de pruebas') {
             steps {
-                sh 'pytest tests/ -v'
+                sh 'python3 -m pytest tests/ -v'
                 echo 'Todas las pruebas pasaron exitosamente'
             }
         }
@@ -41,7 +37,6 @@ pipeline {
             steps {
                 echo '========================================='
                 echo 'Despliegue realizado correctamente en ambiente de pruebas'
-                echo 'Version: build-' + env.BUILD_NUMBER
                 sh 'date'
             }
         }
